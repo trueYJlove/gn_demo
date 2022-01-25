@@ -1,0 +1,37 @@
+config("serial_include") {
+  include_dirs = [
+    "//third_party/serial",
+  ]
+}
+
+source_set("serial") {
+  public_configs = [ ":serial_include" ]
+
+  include_dirs = [ "//third_party" ]
+
+  sources = [
+    "serial.h",
+    "src/serial.cc",
+    "v8stdint.h",
+  ]
+
+  if (current_os == "win") {
+    sources += [
+      "impl/win.h",
+      "src/impl/list_ports/list_ports_win.cc",
+      "src/impl/win.cc",
+    ]
+  } else if (current_os == "mac") {
+    sources += [
+      "impl/unix.h",
+      "src/impl/list_ports/list_ports_osx.cc",
+      "src/impl/unix.cc",
+    ]
+  } else {
+    sources += [
+      "impl/unix.h",
+      "src/impl/list_ports/list_ports_linux.cc",
+      "src/impl/unix.cc",
+    ]
+  }
+}

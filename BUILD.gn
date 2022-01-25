@@ -1,0 +1,44 @@
+executable("gn_demo") {
+  if (is_debug) {
+    cflags_cc += [
+      "-g"
+    ]
+  }
+
+  if (target_cpu == "x86") {
+    cflags_cc += [
+      "-m32"
+    ]
+  }
+
+  defines = [
+    "AIO"
+  ]
+
+  libs = []
+
+  if (is_win) {
+    defines += [ "OS_WIN" ]
+  } else if (is_linux) {
+    defines += [ "OS_LINUX" ]
+  } else if (is_mac) {
+    defines += [ "OS_MAC" ]
+  }
+
+  libs += [
+    "dl",
+    "pthread"
+  ]
+
+  include_dirs = [
+    "//",
+  ]
+
+  deps = [
+    "//third_party/serial",
+  ]
+
+  sources = [
+    "main.cc",
+  ]
+}
